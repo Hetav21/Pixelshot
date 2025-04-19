@@ -5,6 +5,7 @@ import { isEnv } from "../lib/environment.js";
 import { getUIPath, pathResolver } from "../lib/pathResolver.js";
 import { isPlatform } from "../lib/utils.js";
 import { ConfigType } from "../types/config.js";
+import { registerListeners } from "./listners.js";
 import { createMenu } from "./menu.js";
 import { handleCloseEvents, handleTerminate } from "./terminate.js";
 import { createTray } from "./tray.js";
@@ -66,10 +67,11 @@ export async function getAppReady(config: ConfigType) {
     icon: nativeImage.createFromPath(pathResolver(`assets/icons/${icon}.png`)),
 
     webPreferences: {
+      preload: pathResolver("preload.cjs"),
       partition: config.partition,
-      nodeIntegration: false,
-      contextIsolation: config.contextIsolation,
-      sandbox: config.sandbox,
+      nodeIntegration: config.nodeIntegration,
+      contextIsolation: true,
+      sandbox: false,
     },
   });
 
@@ -77,7 +79,24 @@ export async function getAppReady(config: ConfigType) {
   createTray(config, mainWindow);
   createMenu(mainWindow);
 
-  if (isEnv("dev")) {
+  if (isEnv("prod")) {
+    // Overriding eval function from both global and window objects
+    Object.defineProperty(global, "eval", {
+      value: () => {
+        throw new Error("Sorry, this app does not support window.eval().");
+      },
+      writable: false,
+      configurable: false,
+    });
+
+    Object.defineProperty(mainWindow, "eval", {
+      value: () => {
+        throw new Error("Sorry, this app does not support window.eval().");
+      },
+      writable: false,
+      configurable: false,
+    });
+  } else if (isEnv("dev")) {
     mainWindow.webContents.openDevTools();
   }
 
@@ -103,6 +122,8 @@ export async function getAppReady(config: ConfigType) {
     // irrespective of the OS
     mainWindow.loadFile(getUIPath());
   }
+
+  registerListeners(mainWindow);
 
   handleCloseEvents(mainWindow, config.exitToTray);
   console.info("Window created successfully");

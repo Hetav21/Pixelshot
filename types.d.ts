@@ -7,5 +7,6 @@ interface Window {
       format: "png" | "jpg";
     }) => void;
     stopCapturing: () => void;
+    getHomeDir: () => string;
   };
 }

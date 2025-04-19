@@ -14,11 +14,6 @@ const startUpOptionsSchema = {
     describe: "Clear stored application data before startup.",
     type: "boolean",
   },
-  contextIsolation: {
-    default: true,
-    describe: "Enable context isolation for security (Do not change).",
-    type: "boolean",
-  },
   deleteConfig: {
     default: false,
     describe: "Delete the existing configuration file.",
@@ -36,9 +31,9 @@ const startUpOptionsSchema = {
     choices: ["debug", "test", "prod"] satisfies Env[],
     type: "string",
   },
-  sandbox: {
-    default: true,
-    describe: "Enable sandboxing for security (Do not change).",
+  nodeIntegration: {
+    default: false,
+    describe: "Enable node integration.",
     type: "boolean",
   },
   saveConfig: {

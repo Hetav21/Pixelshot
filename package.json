@@ -1,7 +1,7 @@
 {
   "name": "pixelshot",
   "productName": "Pixelshot",
-  "version": "0.2.0",
+  "version": "0.5.1",
   "description": "Screenshots for desktop",
   "main": "dist/electron/index.js",
   "private": true,
@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "npm-run-all --parallel dev:ui dev:electron",
     "dev:ui": "vite",
-    "dev:electron": "npm run transpile:electron && cross-env NODE_ENV=prod electron dist/electron",
+    "dev:electron": "npm run transpile:electron && cross-env NODE_ENV=dev electron dist/electron",
     "build": "tsc -b && vite build",
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
     "lint": "eslint .",
