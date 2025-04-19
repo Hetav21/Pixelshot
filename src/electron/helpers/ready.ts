@@ -2,7 +2,11 @@ import { dialog, nativeImage, session } from "electron";
 import windowStateKeeper from "electron-window-state";
 import { BrowserWindow } from "electron/main";
 import { isEnv } from "../lib/environment.js";
-import { getUIPath, pathResolver } from "../lib/pathResolver.js";
+import {
+  getUIPath,
+  pathResolver,
+  pathResolverAssets,
+} from "../lib/pathResolver.js";
 import { isPlatform } from "../lib/utils.js";
 import { ConfigType } from "../types/config.js";
 import { registerListeners } from "./listners.js";
@@ -64,7 +68,9 @@ export async function getAppReady(config: ConfigType) {
     autoHideMenuBar: config.menubar,
     frame: config.frame,
 
-    icon: nativeImage.createFromPath(pathResolver(`assets/icons/${icon}.png`)),
+    icon: nativeImage.createFromPath(
+      pathResolverAssets(`public/icons/${icon}.png`),
+    ),
 
     webPreferences: {
       preload: pathResolver("preload.cjs"),
@@ -99,9 +105,6 @@ export async function getAppReady(config: ConfigType) {
   } else if (isEnv("dev")) {
     mainWindow.webContents.openDevTools();
   }
-
-  if (config.userAgent && config.userAgent !== "")
-    mainWindow.webContents.setUserAgent(config.userAgent);
 
   if (config.start === "maximized") {
     mainWindow.show();

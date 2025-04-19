@@ -8,9 +8,21 @@ const applicationOptionsSchema = {
     choices: ["alternate", "default"],
     type: "string",
   },
+  trayIcon: {
+    default: undefined,
+    describe: "Choose a custom system tray icon style.",
+    choices: ["monochrome", "alternate", "default"],
+    type: "string",
+  },
   disableGpu: {
     default: false,
     describe: "Disable GPU acceleration for rendering.",
+    type: "boolean",
+  },
+  disableWaylandChecks: {
+    default: false,
+    describe:
+      "Disable automatic injection of switches in case wayland protocol is detected.",
     type: "boolean",
   },
   electronCLIFlags: {
@@ -52,17 +64,6 @@ const applicationOptionsSchema = {
   title: {
     default: "Pixelshot",
     describe: "Sets the application window title.",
-    type: "string",
-  },
-  trayIcon: {
-    default: undefined,
-    describe: "Choose a custom system tray icon style.",
-    choices: ["monochrome", "alternate", "default"],
-    type: "string",
-  },
-  userAgent: {
-    default: `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36`,
-    describe: "Override the default user agent string.",
     type: "string",
   },
   watchConfig: {
