@@ -52,7 +52,7 @@ export async function getAppReady(config: ConfigType) {
   const icon =
     config.appIcon || (isPlatform("win32") ? "alternate" : "default");
 
-  const window = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     title: config.title,
 
     x: state.x,
@@ -73,9 +73,9 @@ export async function getAppReady(config: ConfigType) {
     },
   });
 
-  state.manage(window);
-  createTray(config, window);
-  createMenu(window);
+  state.manage(mainWindow);
+  createTray(config, mainWindow);
+  createMenu(mainWindow);
 
   if (isEnv("prod")) {
     // Overriding eval function from both global and window objects
@@ -95,25 +95,25 @@ export async function getAppReady(config: ConfigType) {
       configurable: false,
     });
   } else if (isEnv("dev")) {
-    window.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   }
 
   if (config.userAgent && config.userAgent !== "")
-    window.webContents.setUserAgent(config.userAgent);
+    mainWindow.webContents.setUserAgent(config.userAgent);
 
   if (config.start === "maximized") {
-    window.show();
+    mainWindow.show();
   } else if (config.start === "minimized") {
-    window.minimize();
+    mainWindow.minimize();
   } else if (config.start === "tray") {
-    window.hide();
+    mainWindow.hide();
   }
 
   console.log(`App started in ${config.start} state`);
 
   // Main App Logic
 
-  handleCloseEvents(window, config.exitToTray);
+  handleCloseEvents(mainWindow, config.exitToTray);
   console.info("Window created successfully");
-  return window;
+  return mainWindow;
 }
