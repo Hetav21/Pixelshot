@@ -7,7 +7,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npm run transpile && cross-env NODE_ENV=dev electron .",
+    "dev": "npm run transpile && cross-env NODE_ENV=dev electron dist/electron",
     "lint": "eslint src/**/*.ts",
     "transpile": "tsc --project tsconfig.json",
     "build": "npm run transpile && electron-builder",
