@@ -1,0 +1,52 @@
+{
+  "name": "pixelshot",
+  "productName": "Pixelshot",
+  "version": "0.2.0",
+  "description": "Screenshots for desktop",
+  "main": "dist/index.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run transpile && cross-env NODE_ENV=dev electron .",
+    "lint": "eslint src/**/*.ts",
+    "transpile": "tsc --project tsconfig.json",
+    "build": "npm run transpile && electron-builder",
+    "build:linux": "npm run transpile && electron-builder --linux",
+    "build:linux:x64": "npm run transpile && electron-builder --x64 --linux",
+    "build:linux:arm": "npm run transpile && electron-builder --armv7l --linux",
+    "build:linux:arm64": "npm run transpile && electron-builder --arm64 --linux"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hetav21/Pixelshot.git"
+  },
+  "keywords": [
+    "Screenshots",
+    "Desktop"
+  ],
+  "author": {
+    "name": "Hetav Shah",
+    "email": "shahhetav2106@gmail.com",
+    "url": "https://github.com/Hetav21/"
+  },
+  "bugs": {
+    "url": "https://github.com/Hetav21/Pixelshot/issues"
+  },
+  "homepage": "https://github.com/Hetav21/Pixelshot/blob/master/README.md",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/yargs": "^17.0.33",
+    "cross-env": "^7.0.3",
+    "electron": "34.2.0",
+    "electron-builder": "^25.1.8",
+    "eslint": "^9.20.1",
+    "globals": "^15.15.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.1"
+  },
+  "dependencies": {
+    "electron-log": "^5.3.0",
+    "electron-window-state": "^5.0.3",
+    "yargs": "^17.7.2"
+  }
+}

@@ -1,0 +1,25 @@
+appId: "pixelshot"
+productName: "Pixelshot"
+
+files:
+  - "dist/**"
+artifactName: "pixelshot_${os}_${arch}.${ext}"
+directories:
+  output: "out/${platform}"
+  buildResources: "assets"
+extraResources:
+  - "assets/**"
+icon: "assets/icons/default.png"
+
+linux:
+  category: "Utility"
+  executableName: "pixelshot"
+  synopsis: "Pixelshot"
+  description: "Screenshot tool"
+  desktop:
+    Name: "Pixelshot"
+    Comment: "Pixelshot"
+    StartupWMClass: "pixelshot"
+  target:
+    - "tar.gz"
+    - "AppImage"
