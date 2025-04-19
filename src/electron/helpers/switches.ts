@@ -28,7 +28,11 @@ export function handleDefaultSwitches(config: ConfigType) {
   //   Array.from(featuresToDisable).join(","),
   // );
 
-  if (process.env.XDG_SESSION_TYPE === "wayland") handleWayland(config);
+  if (
+    !config.disableWaylandChecks &&
+    process.env.XDG_SESSION_TYPE === "wayland"
+  )
+    handleWayland(config);
 
   // Disable GPU rendering if specified in the config
   if (config.disableGpu) {
@@ -69,7 +73,11 @@ function handleWayland(config: ConfigType) {
   console.warn("Running under Wayland, using additional switches...");
 
   // Set the Ozone platform to Wayland (required for Electron on Wayland)
-  appCommandLineAppendSwitch("ozone-platform", "wayland");
+  if (process.env.SHELL?.includes("nu")) {
+    console.warn("Skipping ozone-platform=wayland due to known nushell issue");
+  } else {
+    appCommandLineAppendSwitch("ozone-platform", "wayland");
+  }
 
   // Enabling additional features for Wayland support
   const featuresToEnable = new Set(
