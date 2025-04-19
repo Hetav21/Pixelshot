@@ -2,7 +2,7 @@ import { dialog, nativeImage, session } from "electron";
 import windowStateKeeper from "electron-window-state";
 import { BrowserWindow } from "electron/main";
 import { isEnv } from "../lib/environment.js";
-import { pathResolver } from "../lib/pathResolver.js";
+import { getUIPath, pathResolver } from "../lib/pathResolver.js";
 import { isPlatform } from "../lib/utils.js";
 import { ConfigType } from "../types/config.js";
 import { createMenu } from "./menu.js";
@@ -77,24 +77,7 @@ export async function getAppReady(config: ConfigType) {
   createTray(config, mainWindow);
   createMenu(mainWindow);
 
-  if (isEnv("prod")) {
-    // Overriding eval function from both global and window objects
-    Object.defineProperty(global, "eval", {
-      value: () => {
-        throw new Error("Sorry, this app does not support window.eval().");
-      },
-      writable: false,
-      configurable: false,
-    });
-
-    Object.defineProperty(window, "eval", {
-      value: () => {
-        throw new Error("Sorry, this app does not support window.eval().");
-      },
-      writable: false,
-      configurable: false,
-    });
-  } else if (isEnv("dev")) {
+  if (isEnv("dev")) {
     mainWindow.webContents.openDevTools();
   }
 
@@ -111,7 +94,15 @@ export async function getAppReady(config: ConfigType) {
 
   console.log(`App started in ${config.start} state`);
 
-  // Main App Logic
+  // Main App
+  if (isEnv("dev")) {
+    mainWindow.loadURL("http://localhost:3000");
+  } else {
+    // path from node,
+    // ensures that we get the correct path
+    // irrespective of the OS
+    mainWindow.loadFile(getUIPath());
+  }
 
   handleCloseEvents(mainWindow, config.exitToTray);
   console.info("Window created successfully");

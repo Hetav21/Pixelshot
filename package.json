@@ -7,14 +7,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npm run transpile && cross-env NODE_ENV=dev electron dist/electron",
-    "lint": "eslint src/**/*.ts",
-    "transpile": "tsc --project tsconfig.json",
-    "build": "npm run transpile && electron-builder",
-    "build:linux": "npm run transpile && electron-builder --linux",
-    "build:linux:x64": "npm run transpile && electron-builder --x64 --linux",
-    "build:linux:arm": "npm run transpile && electron-builder --armv7l --linux",
-    "build:linux:arm64": "npm run transpile && electron-builder --arm64 --linux"
+    "dev": "npm-run-all --parallel dev:react dev:electron",
+    "dev:electron": "npm run transpile:electron && cross-env NODE_ENV=development electron .",
+    "transpile:electron": "tsc --project src/electron/tsconfig.json",
+    "build:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
+    "build:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64",
+    "build:windows": "npm run transpile:electron && npm run build && electron-builder --win --x64",
+    "dev:react": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -42,9 +44,18 @@
     "eslint": "^9.20.1",
     "globals": "^15.15.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.24.1"
+    "typescript-eslint": "^8.24.1",
+    "@eslint/js": "^9.22.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "vite": "^6.3.1"
   },
   "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "electron-log": "^5.3.0",
     "electron-window-state": "^5.0.3",
     "yargs": "^17.7.2"
