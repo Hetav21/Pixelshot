@@ -1,0 +1,7 @@
+import { app } from "electron";
+import path from "node:path";
+import { isEnv } from "./environment.js";
+
+export function pathResolver(requiredPath: string) {
+  return path.join(app.getAppPath(), isEnv("dev") ? "./" : "../", requiredPath);
+}
