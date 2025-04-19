@@ -3,23 +3,32 @@ productName: "Pixelshot"
 
 files:
   - "dist/**"
+
 artifactName: "pixelshot_${os}_${arch}.${ext}"
+
 directories:
   output: "out/${platform}"
-  buildResources: "assets"
+  buildResources: "public"
+
 extraResources:
-  - "assets/**"
-icon: "assets/icons/default.png"
+  - from: "public"
+    to: "public"
+  - from: "dist/ui"
+    to: "ui"
+  - from: "dist/electron/preload.cjs"
+    to: "preload.cjs"
+
+icon: "public/icons/default.png"
 
 linux:
   category: "Utility"
   executableName: "pixelshot"
   synopsis: "Pixelshot"
   description: "Screenshot tool"
+  icon: "public/icons/default.png"
   desktop:
     Name: "Pixelshot"
     Comment: "Pixelshot"
     StartupWMClass: "pixelshot"
   target:
-    - "tar.gz"
-    - "AppImage"
+    - AppImage

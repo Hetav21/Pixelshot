@@ -10,13 +10,14 @@
     "dev": "npm-run-all --parallel dev:ui dev:electron",
     "dev:ui": "vite",
     "dev:electron": "npm run transpile:electron && cross-env NODE_ENV=dev electron dist/electron",
-    "build": "tsc -b && vite build",
+    "transpile": "npm-run-all --parallel transpile:ui transpile:electron",
+    "transpile:ui": "tsc -b && vite build",
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "build:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
-    "build:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64",
-    "build:windows": "npm run transpile:electron && npm run build && electron-builder --win --x64"
+    "build": "npm run transpile && electron-builder",
+    "build:mac": "npm run transpile && electron-builder --mac --arm64",
+    "build:linux": "npm run transpile && electron-builder --linux --x64",
+    "build:windows": "npm run transpile && electron-builder --win --x64",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
