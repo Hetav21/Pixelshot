@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCounter } from "./hooks/useCounter";
 import { FolderOpen, ImageIcon, Timer, Play, StopCircle } from "lucide-react";
 
@@ -90,7 +90,7 @@ function App() {
         <div className="space-y-2">
           <label
             htmlFor="folderPath"
-            className="block font-semibold text-gray-700 flex items-center gap-2"
+            className="font-semibold text-gray-700 flex items-center gap-2"
           >
             <FolderOpen className="w-4 h-4" /> Destination Folder
           </label>
