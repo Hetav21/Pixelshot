@@ -14,6 +14,7 @@ import { pathResolverAssets } from "../lib/pathResolver.js";
 import { isPlatform } from "../lib/utils.js";
 import { ConfigType } from "../types/config.js";
 import { signIn, signUp } from "./session.js";
+import { addPath, getAllValidPaths } from "./filePaths.js";
 
 let captureInterval: NodeJS.Timeout | null = null;
 let countdownTimeout: NodeJS.Timeout | null = null;
@@ -35,10 +36,15 @@ export function registerListeners(
     "start-capturing",
     async (
       event,
-      options: { interval: number; folderPath: string; format: "png" | "jpg" },
+      options: {
+        username: Session["username"];
+        interval: number;
+        folderPath: string;
+        format: "png" | "jpg";
+      },
     ) => {
       // Getting interval, folderPath and format from frontend
-      const { interval, folderPath, format } = options;
+      const { username, interval, folderPath, format } = options;
 
       // Removing existing interval (if any)
       if (captureInterval) clearInterval(captureInterval);
@@ -102,7 +108,12 @@ export function registerListeners(
 
           if (isPlatform("linux")) {
             exec(`${config.customScreenshotCommand} "${savePath}"`, (err) => {
-              if (!err && !config.disableNotifications) notifyScreenshot();
+              if (!err) {
+                addPath(username, savePath);
+                if (!config.disableNotifications) notifyScreenshot();
+              } else {
+                console.warn("Screenshot failed:", err);
+              }
             });
           } else {
             screenshot({ filename: savePath })
@@ -139,6 +150,9 @@ export function registerListeners(
 ipcMainHandle("signIn", (_, session) =>
   signIn(session.username, session.password),
 );
+
 ipcMainHandle("signUp", (_, session) =>
   signUp(session.username, session.password),
 );
+
+ipcMainHandle("getPaths", (_, params) => getAllValidPaths(params.username));

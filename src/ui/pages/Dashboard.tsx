@@ -1,14 +1,34 @@
-import { useState } from "react";
+import Cookies from "js-cookie";
+import { FolderOpen, ImageIcon, Play, StopCircle, Timer } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useCounter } from "../hooks/useCounter";
-import { FolderOpen, ImageIcon, Timer, Play, StopCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export function Dashboard() {
   const [interval, setInterval] = useState(10);
   const [format, setFormat] = useState<"png" | "jpg">("png");
   const [folderPath, setFolderPath] = useState("");
   const [isCapturing, setIsCapturing] = useState(false);
+  const [paths, setPaths] = useState<string[]>([]);
 
   const counter = useCounter();
+
+  useEffect(() => {
+    const fetchPaths = async () => {
+      const res = await window.electronAPI.getPaths({
+        username: Cookies.get("username")!,
+      });
+
+      console.log(res.info?.filePaths!);
+      if (res.success) setPaths(res.info?.filePaths!);
+      else
+        toast.warning("Error fetching paths", {
+          description: res.message,
+        });
+    };
+
+    fetchPaths();
+  }, [isCapturing]);
 
   const handleSelectFolder = async () => {
     const folder = await window.electronAPI.selectFolder();
@@ -25,10 +45,12 @@ export function Dashboard() {
         return;
       }
 
+      const username = Cookies.get("username")!;
       const homeDir = window.electronAPI.getHomeDir();
       const folder = folderPath || `${homeDir}/Desktop`;
 
       window.electronAPI.startCapturing({
+        username,
         interval,
         folderPath: folder,
         format,

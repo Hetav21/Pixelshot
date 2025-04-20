@@ -1,7 +1,8 @@
-import { Dashboard } from "@/pages/App";
+import { Dashboard } from "@/pages/Dashboard";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { Auth } from "./components/Auth";
-import { useEffect } from "react";
 
 function App() {
   // Defining routes of the application
@@ -29,8 +30,14 @@ export function Redirect() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/sign-up");
-  });
+    const username = Cookies.get("username");
+
+    if (username) {
+      navigate("/sign-in");
+    } else {
+      navigate("/sign-up");
+    }
+  }, [navigate]);
 
   return null;
 }

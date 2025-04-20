@@ -7,14 +7,16 @@ contextBridge.exposeInMainWorld("electronAPI", {
   subscribeCounter: (callback: (value: number) => void) => {
     return ipcOn("counterTick", (value) => callback(value));
   },
+  getPaths: (params: { username: Session["username"] }) =>
+    ipcInvoke("getPaths", params),
   selectFolder: () => ipcRenderer.invoke("select-folder"),
   startCapturing: (options: {
+    username: Session["username"];
     interval: number;
     folderPath: string;
     format: "png" | "jpg";
   }) => ipcRenderer.send("start-capturing", options),
   stopCapturing: () => ipcRenderer.send("stop-capturing"),
-  startCapturingSimple: () => ipcRenderer.send("start-capturing-simple"),
   getHomeDir: () => os.homedir(),
   signIn: (options: {
     username: Session["username"];

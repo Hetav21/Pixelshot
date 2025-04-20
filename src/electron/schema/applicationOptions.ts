@@ -89,7 +89,7 @@ const applicationOptionsSchema = {
     type: "string",
   },
   watchConfig: {
-    default: true,
+    default: false,
     describe: "Reload the app when the config file changes",
     type: "boolean",
   },

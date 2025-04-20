@@ -2,6 +2,8 @@
 // for main process
 type EventPayloadMapping = {
   counterTick: number;
+  paths: ApiResponse;
+  getPaths: Promise<ApiResponse>;
   signUp: Promise<ApiResponse>;
   signIn: Promise<ApiResponse>;
 };
@@ -13,8 +15,12 @@ interface Window {
     subscribeCounter: (
       callback: (stats: number) => void,
     ) => UnsubscribeFunction;
+    getPaths: (params: {
+      username: Session["username"];
+    }) => Promise<ApiResponse>;
     selectFolder: () => Promise<string | null>;
     startCapturing: (options: {
+      username: Session["username"];
       interval: number;
       folderPath: string;
       format: "png" | "jpg";

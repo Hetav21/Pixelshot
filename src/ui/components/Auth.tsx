@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { signInSchema } from "@/schema/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -20,12 +19,6 @@ import { signUpSchema } from "../schema/signUpSchema";
 
 export function Auth({ type }: { type: "sign-up" | "sign-in" }) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (Cookies.get("token")) {
-      navigate("/dashboard");
-    }
-  }, [navigate]);
 
   const schema = type === "sign-up" ? signUpSchema : signInSchema;
 
@@ -63,7 +56,7 @@ export function Auth({ type }: { type: "sign-up" | "sign-in" }) {
         return;
       }
 
-      Cookies.set("id", res.info!.username!);
+      Cookies.set("username", res.info!.username!);
 
       toast.success("Logged in successfully!");
 

@@ -1,20 +1,5 @@
-import Store from "electron-store";
 import { comparePasswords, hashPassword } from "../lib/passwords.js";
-
-// Define schema for the *values* inside the `sessions` object
-const store = new Store<{ sessions: Record<string, Session> }>({
-  defaults: {
-    sessions: {},
-  },
-});
-
-function getSessions(): Record<string, Session> {
-  return store.get("sessions", {});
-}
-
-function saveSessions(sessions: Record<string, Session>): void {
-  store.set("sessions", sessions);
-}
+import { getSessions, saveSessions } from "./store.js";
 
 export async function signUp(
   username: string,
@@ -39,8 +24,6 @@ export async function signUp(
     }
 
     const hashedPassword = await hashPassword(password);
-
-    console.log(password, hashedPassword);
 
     sessions[username] = {
       username,
