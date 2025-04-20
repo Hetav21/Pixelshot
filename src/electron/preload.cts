@@ -1,6 +1,7 @@
 import { contextBridge, IpcMainEvent, ipcRenderer } from "electron";
 
 const os = require("os");
+const fs = require("fs");
 const electron = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
@@ -26,6 +27,19 @@ contextBridge.exposeInMainWorld("electronAPI", {
     username: Session["username"];
     password: Session["password"];
   }) => ipcInvoke("signUp", options),
+  readImageAsDataUrl: (path: string) =>
+    new Promise((resolve, reject) => {
+      fs.readFile(
+        path.replace("file://", ""),
+        (err: Error | null, data: any) => {
+          if (err) reject(err);
+          else
+            resolve(
+              `data:image/${path.endsWith(".png") ? "png" : "jpeg"};base64,${data.toString("base64")}`,
+            );
+        },
+      );
+    }),
 });
 
 function ipcOn<Key extends keyof EventPayloadMapping>(

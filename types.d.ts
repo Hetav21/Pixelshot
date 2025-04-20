@@ -35,6 +35,7 @@ interface Window {
       username: Session["username"];
       password: Session["password"];
     }) => Promise<ApiResponse>;
+    readImageAsDataUrl: (path: string) => Promise<string>;
   };
 }
 

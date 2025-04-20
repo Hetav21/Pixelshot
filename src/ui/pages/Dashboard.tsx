@@ -1,16 +1,13 @@
+import { Navbar } from "@/components/NavBar";
 import Cookies from "js-cookie";
-import { FolderOpen, ImageIcon, Play, StopCircle, Timer } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useCounter } from "../hooks/useCounter";
 import { toast } from "sonner";
+import { useCounter } from "../hooks/useCounter";
 
 export function Dashboard() {
-  const [interval, setInterval] = useState(10);
-  const [format, setFormat] = useState<"png" | "jpg">("png");
-  const [folderPath, setFolderPath] = useState("");
   const [isCapturing, setIsCapturing] = useState(false);
   const [paths, setPaths] = useState<string[]>([]);
-
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const counter = useCounter();
 
   useEffect(() => {
@@ -19,143 +16,62 @@ export function Dashboard() {
         username: Cookies.get("username")!,
       });
 
-      console.log(res.info?.filePaths!);
-      if (res.success) setPaths(res.info?.filePaths!);
-      else
+      if (res.success) {
+        setPaths(res.info?.filePaths!);
+
+        // Convert to data URLs
+        const urls = await Promise.all(
+          res.info!.filePaths!.map((path) =>
+            window.electronAPI.readImageAsDataUrl(path),
+          ),
+        );
+        setImageUrls(urls);
+      } else {
         toast.warning("Error fetching paths", {
           description: res.message,
         });
+      }
     };
 
     fetchPaths();
-  }, [isCapturing]);
-
-  const handleSelectFolder = async () => {
-    const folder = await window.electronAPI.selectFolder();
-    if (folder) setFolderPath(folder);
-  };
-
-  const handleToggleCapture = () => {
-    if (isCapturing) {
-      window.electronAPI.stopCapturing();
-      setIsCapturing(false);
-    } else {
-      if (!interval || !format) {
-        alert("Please enter a valid interval and format.");
-        return;
-      }
-
-      const username = Cookies.get("username")!;
-      const homeDir = window.electronAPI.getHomeDir();
-      const folder = folderPath || `${homeDir}/Desktop`;
-
-      window.electronAPI.startCapturing({
-        username,
-        interval,
-        folderPath: folder,
-        format,
-      });
-      setIsCapturing(true);
-    }
-  };
+  }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 p-6">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6 transition-all">
-        <h1 className="text-3xl font-bold text-center text-gray-800">
-          Pixelshot
-        </h1>
+    <div className="mx-10">
+      <Navbar isCapturing={isCapturing} setIsCapturing={setIsCapturing} />
 
-        {counter !== null && counter > 0 && (
-          <div className="text-center text-gray-600 font-medium">
+      <div className="py-32 lg:py-16"></div>
+
+      <div className="pt-20 px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {imageUrls.map((src, index) => (
+            <div
+              key={index}
+              className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition"
+            >
+              <img
+                src={src}
+                alt={`Screenshot ${index + 1}`}
+                className="w-full h-48 object-contain bg-gray-100"
+              />
+
+              <div className="px-3 py-2 text-sm text-gray-600 truncate">
+                {paths[index].replace("file://", "")}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {isCapturing && counter !== null && counter > 0 && (
+        <div className="fixed top-16 left-0 right-0 bottom-0 flex items-center justify-center bg-white z-40">
+          <div className="text-center text-gray-600 font-medium text-2xl">
             Capturing in
             <span className="mx-2 font-semibold text-blue-600">{counter}</span>
             seconds
           </div>
-        )}
-
-        <div className="space-y-2">
-          <label
-            htmlFor="interval"
-            className="font-semibold text-gray-700 flex items-center gap-2"
-          >
-            <Timer className="w-4 h-4" /> Interval (seconds)
-          </label>
-          <input
-            type="number"
-            id="interval"
-            min={1}
-            value={interval}
-            onChange={(e) => setInterval(Number(e.target.value))}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          />
         </div>
-
-        <div className="space-y-2">
-          <label
-            htmlFor="format"
-            className="font-semibold text-gray-700 flex items-center gap-2"
-          >
-            <ImageIcon className="w-4 h-4" /> Image Format
-          </label>
-          <select
-            id="format"
-            value={format}
-            onChange={(e) => setFormat(e.target.value as "png" | "jpg")}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          >
-            <option value="png">PNG</option>
-            <option value="jpg">JPEG</option>
-          </select>
-        </div>
-
-        <div className="space-y-2">
-          <label
-            htmlFor="folderPath"
-            className="font-semibold text-gray-700 flex items-center gap-2"
-          >
-            <FolderOpen className="w-4 h-4" /> Destination Folder
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              id="folderPath"
-              readOnly
-              placeholder="Default: Desktop"
-              value={folderPath}
-              className="flex-1 px-3 py-2 border rounded-lg bg-gray-50 text-sm focus:outline-none"
-            />
-            <button
-              onClick={handleSelectFolder}
-              className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
-            >
-              Browse
-            </button>
-          </div>
-        </div>
-
-        <div className="flex justify-center pt-4">
-          <button
-            onClick={handleToggleCapture}
-            className={`flex items-center gap-2 px-4 py-2 font-semibold rounded-lg transition
-              ${
-                isCapturing
-                  ? "bg-red-500 text-white hover:bg-red-600"
-                  : "bg-green-500 text-white hover:bg-green-600"
-              }`}
-          >
-            {isCapturing ? (
-              <>
-                <StopCircle className="w-4 h-4" /> Stop Capturing
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4" /> Start Capturing
-              </>
-            )}
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
