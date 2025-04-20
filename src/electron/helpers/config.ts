@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { ipcMainEmit } from "../electron-utils/ipcMain.js";
+import { ipcMainEmit } from "../electron-utils/ipc.js";
 import { isEnv } from "../lib/environment.js";
 import { deleteFile, saveFile } from "../lib/filesystem.js";
 import applicationOptionsSchema from "../schema/applicationOptions.js";

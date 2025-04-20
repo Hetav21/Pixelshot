@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import { LogLevel } from "electron-log";
 import path from "path";
-import { ipcMainOn } from "./electron-utils/ipcMain.js";
+import { ipcMainOn } from "./electron-utils/ipc.js";
 import { loadConfig } from "./helpers/config.js";
 import { logger } from "./helpers/logger.js";
 import { getAppReady } from "./helpers/ready.js";

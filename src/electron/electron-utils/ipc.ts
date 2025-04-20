@@ -11,3 +11,12 @@ export function ipcMainOn(
 ): Electron.IpcMain {
   return ipcMain.on(event, callback);
 }
+
+// wrapper around webContents.send, so as to increase type safety
+export function ipcWebContentsSend<Key extends keyof EventPayloadMapping>(
+  key: Key,
+  webContents: Electron.WebContents,
+  payload: EventPayloadMapping[Key],
+) {
+  webContents.send(key, payload);
+}
