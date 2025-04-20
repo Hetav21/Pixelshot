@@ -51,7 +51,7 @@ export function registerListeners(
       if (countdownTimeout) clearTimeout(countdownTimeout);
 
       // Countdown duration (in seconds)
-      const countdownSeconds = 3;
+      const countdownSeconds = interval;
 
       for (let i = countdownSeconds; i >= 0; i--) {
         setTimeout(

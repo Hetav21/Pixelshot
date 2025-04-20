@@ -28,8 +28,8 @@ export function Auth({ type }: { type: "sign-up" | "sign-in" }) {
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: "test",
+      password: "12345@hH",
     },
   });
 

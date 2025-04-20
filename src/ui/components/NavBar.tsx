@@ -5,11 +5,14 @@ import { useState } from "react";
 export function Navbar({
   isCapturing,
   setIsCapturing,
+  interval,
+  setInterval,
 }: {
   isCapturing: boolean;
   setIsCapturing: React.Dispatch<React.SetStateAction<boolean>>;
+  interval: number;
+  setInterval: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const [interval, setInterval] = useState(10);
   const [format, setFormat] = useState<"png" | "jpg">("png");
   const [folderPath, setFolderPath] = useState("");
 
