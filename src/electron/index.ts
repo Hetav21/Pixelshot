@@ -8,6 +8,7 @@ import { getAppReady } from "./helpers/ready.js";
 import { getStartUpConfigFromCommandLine } from "./helpers/startUpConfig.js";
 import { handleDefaultSwitches } from "./helpers/switches.js";
 import { isEnv, setEnv } from "./lib/environment.js";
+import { isPlatform } from "./lib/utils.js";
 
 const startUpConfig = getStartUpConfigFromCommandLine();
 
@@ -62,11 +63,23 @@ if (!app.requestSingleInstanceLock()) {
     mainWindow = await getAppReady(config);
   });
 
+  app.setLoginItemSettings({
+    openAtLogin: true,
+    openAsHidden: true,
+    path: process.execPath,
+  });
+
   app.on("second-instance", () => {
     console.warn("A second instance was attempted to start.");
     if (mainWindow) {
       if (!mainWindow.isVisible()) mainWindow.show();
       mainWindow.focus();
+    }
+  });
+
+  app.on("window-all-closed", () => {
+    if (!isPlatform("darwin")) {
+      app.quit();
     }
   });
 
