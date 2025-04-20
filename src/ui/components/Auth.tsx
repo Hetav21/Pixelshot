@@ -103,7 +103,7 @@ export function Auth({ type }: { type: "sign-up" | "sign-in" }) {
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder="example" {...field} />
+                      <Input placeholder="donald_trump" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

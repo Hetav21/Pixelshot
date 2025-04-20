@@ -1,18 +1,6 @@
 import Store from "electron-store";
 import { comparePasswords, hashPassword } from "../lib/passwords.js";
 
-interface Session {
-  username: string;
-  password: string;
-  filePaths: string[];
-}
-
-interface ApiResponse {
-  success: boolean;
-  message: string;
-  info?: Partial<Session>;
-}
-
 // Define schema for the *values* inside the `sessions` object
 const store = new Store<{ sessions: Record<string, Session> }>({
   defaults: {
