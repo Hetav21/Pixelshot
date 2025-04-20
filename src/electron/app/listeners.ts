@@ -6,12 +6,14 @@ import {
   ipcMain,
   nativeImage,
 } from "electron";
+import fs from "fs";
 import path from "path";
 import screenshot from "screenshot-desktop";
+import { ipcMainHandle, ipcWebContentsSend } from "../electron-utils/ipc.js";
 import { pathResolverAssets } from "../lib/pathResolver.js";
 import { isPlatform } from "../lib/utils.js";
 import { ConfigType } from "../types/config.js";
-import { ipcWebContentsSend } from "../electron-utils/ipc.js";
+import { signIn, signUp } from "./session.js";
 
 let captureInterval: NodeJS.Timeout | null = null;
 let countdownTimeout: NodeJS.Timeout | null = null;
@@ -58,9 +60,20 @@ export function registerListeners(
       // After countdown, start screenshot interval
       countdownTimeout = setTimeout(() => {
         const takeScreenshot = () => {
-          const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-          const fileName = `screenshot_${timestamp}.${format}`;
-          const savePath = path.join(folderPath, fileName);
+          const now = new Date();
+
+          // Format: 2025-04-18 and 14-30-00
+          const datePart = now.toISOString().split("T")[0];
+          const timePart = now.toTimeString().split(" ")[0].replace(/:/g, "-");
+
+          const fileName = `screenshot_${datePart}_${timePart}.${format}`;
+          const dateFolderPath = path.join(folderPath, datePart);
+          const savePath = path.join(dateFolderPath, fileName);
+
+          // Ensure the date-based folder exists
+          if (!fs.existsSync(dateFolderPath)) {
+            fs.mkdirSync(dateFolderPath, { recursive: true });
+          }
 
           const notifyScreenshot = () => {
             const title = "Screenshot Taken";
@@ -75,7 +88,10 @@ export function registerListeners(
                 silent: true,
                 icon: nativeImage.createFromPath(
                   pathResolverAssets(
-                    `public/icons/${config.appIcon || (isPlatform("win32") ? "alternate" : "default")}.png`,
+                    `public/icons/${
+                      config.appIcon ||
+                      (isPlatform("win32") ? "alternate" : "default")
+                    }.png`,
                   ),
                 ),
                 timeoutType: "default",
@@ -84,7 +100,6 @@ export function registerListeners(
             }
           };
 
-          // In case of linux use fallback
           if (isPlatform("linux")) {
             exec(`${config.customScreenshotCommand} "${savePath}"`, (err) => {
               if (!err && !config.disableNotifications) notifyScreenshot();
@@ -120,3 +135,10 @@ export function registerListeners(
     }
   });
 }
+
+ipcMainHandle("signIn", (_, session) =>
+  signIn(session.username, session.password),
+);
+ipcMainHandle("signUp", (_, session) =>
+  signUp(session.username, session.password),
+);

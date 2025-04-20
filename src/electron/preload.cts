@@ -16,6 +16,14 @@ contextBridge.exposeInMainWorld("electronAPI", {
   stopCapturing: () => ipcRenderer.send("stop-capturing"),
   startCapturingSimple: () => ipcRenderer.send("start-capturing-simple"),
   getHomeDir: () => os.homedir(),
+  signIn: (options: {
+    username: Session["username"];
+    password: Session["password"];
+  }) => ipcInvoke("signIn", options),
+  signUp: (options: {
+    username: Session["username"];
+    password: Session["password"];
+  }) => ipcInvoke("signUp", options),
 });
 
 function ipcOn<Key extends keyof EventPayloadMapping>(
@@ -33,6 +41,13 @@ function ipcOn<Key extends keyof EventPayloadMapping>(
   return () => {
     electron.ipcRenderer.off(key, cb);
   };
+}
+
+function ipcInvoke<Key extends keyof EventPayloadMapping>(
+  key: Key,
+  ...args: any[]
+): Promise<EventPayloadMapping[Key]> {
+  return electron.ipcRenderer.invoke(key, ...args);
 }
 
 function ipcSend<Key extends keyof EventPayloadMapping>(

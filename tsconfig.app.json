@@ -23,7 +23,11 @@
     "noUncheckedSideEffectImports": true,
 
     // Adding global types
-    "types": ["./types"]
+    "types": ["./types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/ui/*"]
+    }
   },
   "include": ["src"],
   // Exclude electron folder from the build
