@@ -6,44 +6,44 @@ import { Env } from "../lib/environment.js";
 const startUpOptionsSchema = {
   clearCache: {
     default: false,
-    describe: "Clear cached data before startup.",
+    describe: "Clear cached data before startup",
     type: "boolean",
   },
   clearStorage: {
     default: false,
-    describe: "Clear stored application data before startup.",
+    describe: "Clear stored application data before startup",
     type: "boolean",
   },
   deleteConfig: {
     default: false,
-    describe: "Delete the existing configuration file.",
+    describe: "Delete the existing configuration file",
     type: "boolean",
   },
   logLevel: {
     default: undefined,
-    describe: "Set the console logging level.",
+    describe: "Set the console logging level",
     choices: ["debug", "info", "warn", "error"] satisfies LogLevel[],
     type: "string",
   },
   mode: {
     default: "prod",
-    describe: "Define the app running mode.",
+    describe: "Define the app running mode",
     choices: ["debug", "test", "prod"] satisfies Env[],
     type: "string",
   },
   nodeIntegration: {
     default: false,
-    describe: "Enable node integration.",
+    describe: "Enable node integration",
     type: "boolean",
   },
   saveConfig: {
     default: false,
-    describe: "Save current settings to the configuration file.",
+    describe: "Save current settings to the configuration file",
     type: "boolean",
   },
   userData: {
     default: null,
-    describe: "Define the path to store user data.",
+    describe: "Define the path to store user data",
     type: "string",
   },
 } satisfies { [key: string]: Options };

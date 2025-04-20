@@ -54,9 +54,6 @@ export async function getAppReady(config: ConfigType) {
     }
   }
 
-  const icon =
-    config.appIcon || (isPlatform("win32") ? "alternate" : "default");
-
   const mainWindow = new BrowserWindow({
     title: config.title,
 
@@ -69,7 +66,9 @@ export async function getAppReady(config: ConfigType) {
     frame: config.frame,
 
     icon: nativeImage.createFromPath(
-      pathResolverAssets(`public/icons/${icon}.png`),
+      pathResolverAssets(
+        `public/icons/${config.appIcon || (isPlatform("win32") ? "alternate" : "default")}.png`,
+      ),
     ),
 
     webPreferences: {
@@ -126,7 +125,7 @@ export async function getAppReady(config: ConfigType) {
     mainWindow.loadFile(getUIPath());
   }
 
-  registerListeners(mainWindow);
+  registerListeners(mainWindow, config);
 
   handleCloseEvents(mainWindow, config.exitToTray);
   console.info("Window created successfully");
