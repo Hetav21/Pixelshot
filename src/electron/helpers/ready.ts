@@ -9,7 +9,7 @@ import {
 } from "../lib/pathResolver.js";
 import { isPlatform } from "../lib/utils.js";
 import { ConfigType } from "../types/config.js";
-import { registerListeners } from "./listners.js";
+import { registerListeners } from "./listeners.js";
 import { createMenu } from "./menu.js";
 import { handleCloseEvents, handleTerminate } from "./terminate.js";
 import { createTray } from "./tray.js";
