@@ -1,6 +1,5 @@
-import { dialog, nativeImage, session } from "electron";
+import { BrowserWindow, dialog, nativeImage, session } from "electron";
 import windowStateKeeper from "electron-window-state";
-import { BrowserWindow } from "electron/main";
 import { isEnv } from "../lib/environment.js";
 import {
   getUIPath,

@@ -1,4 +1,4 @@
-import { ipcMain } from "electron/main";
+import { ipcMain } from "electron";
 import type { Event } from "../types/electron.js";
 
 export function ipcMainEmit(event: Event) {
