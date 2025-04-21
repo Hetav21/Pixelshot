@@ -11,6 +11,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -22,16 +24,10 @@ jobs:
           node-version: 20
 
       - name: Clean install dependencies
-        shell: bash # use bash shell even on Windows
+        shell: bash
         run: |
           rm -rf node_modules package-lock.json
           npm install
 
       - name: Build Electron app
         run: npm run build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: pixelshot-${{ matrix.os }}
-          path: out/
