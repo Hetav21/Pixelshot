@@ -22,6 +22,7 @@ jobs:
           node-version: 20
 
       - name: Clean install dependencies
+        shell: bash # use bash shell even on Windows
         run: |
           rm -rf node_modules package-lock.json
           npm install
