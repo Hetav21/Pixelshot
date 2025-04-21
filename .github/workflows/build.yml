@@ -11,6 +11,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -29,6 +31,3 @@ jobs:
 
       - name: Build Electron app
         run: npm run build
-
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
