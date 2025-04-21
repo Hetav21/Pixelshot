@@ -24,7 +24,7 @@ export function createMenu(mainWindow: BrowserWindow) {
               console.debug("DEBUG: \n", "Menu:App:Debug pressed");
               mainWindow.webContents.openDevTools();
             },
-            visible: isEnv("dev"),
+            visible: !isEnv("prod"),
           },
         ],
       },

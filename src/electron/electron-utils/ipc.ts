@@ -39,11 +39,14 @@ export function ipcMainHandle<Key extends keyof EventPayloadMapping>(
 }
 
 export function validateEventFrame(frame: WebFrameMain) {
+  const expectedUrl = pathToFileURL(getUIPath()).toString();
+  const actualUrl = frame.url.split("#")[0];
+
   if (isEnv("dev") && new URL(frame.url).host === "localhost:3000") {
     return;
   }
 
-  if (frame.url !== pathToFileURL(getUIPath()).toString()) {
+  if (actualUrl !== expectedUrl) {
     throw new Error("Malicious Event");
   }
 }

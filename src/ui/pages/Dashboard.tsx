@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/NavBar";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useCounter } from "../hooks/useCounter";
@@ -13,7 +12,7 @@ export function Dashboard() {
 
   const fetchPaths = async () => {
     const res = await window.electronAPI.getPaths({
-      username: Cookies.get("username")!,
+      username: localStorage.getItem("username")!,
     });
 
     if (res.success) {

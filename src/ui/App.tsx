@@ -1,15 +1,13 @@
 import { Dashboard } from "@/pages/Dashboard";
-import Cookies from "js-cookie";
 import { useEffect } from "react";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { HashRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { Auth } from "./components/Auth";
 
 function App() {
-  // Defining routes of the application
   return (
-    <BrowserRouter>
+    <HashRouter>
       <RoutesWithNavbar />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
@@ -30,7 +28,7 @@ export function Redirect() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const username = Cookies.get("username");
+    const username = localStorage.getItem("username");
 
     if (username) {
       navigate("/sign-in");

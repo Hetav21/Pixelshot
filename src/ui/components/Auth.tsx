@@ -10,7 +10,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { signInSchema } from "@/schema/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -56,7 +55,7 @@ export function Auth({ type }: { type: "sign-up" | "sign-in" }) {
         return;
       }
 
-      Cookies.set("username", res.info!.username!);
+      localStorage.setItem("username", res.info!.username!);
 
       toast.success("Logged in successfully!");
 

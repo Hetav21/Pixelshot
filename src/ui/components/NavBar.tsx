@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { FolderOpen, ImageIcon, Play, StopCircle, Timer } from "lucide-react";
 import { useState } from "react";
 
@@ -31,7 +30,7 @@ export function Navbar({
         return;
       }
 
-      const username = Cookies.get("username")!;
+      const username = localStorage.getItem("username")!;
       const homeDir = window.electronAPI.getHomeDir();
       const folder = folderPath || `${homeDir}/Desktop`;
 

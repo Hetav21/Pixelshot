@@ -100,7 +100,7 @@ export async function getAppReady(config: ConfigType) {
       writable: false,
       configurable: false,
     });
-  } else if (isEnv("dev")) {
+  } else {
     mainWindow.webContents.openDevTools();
   }
 
