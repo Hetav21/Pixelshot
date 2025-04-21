@@ -20,6 +20,14 @@ extraResources:
 
 icon: "public/icons/default.png"
 
+mac:
+  target: "dmg"
+
+win:
+  target:
+    - "portable"
+    - "msi"
+
 linux:
   category: "Utility"
   executableName: "pixelshot"

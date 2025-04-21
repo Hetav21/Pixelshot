@@ -14,6 +14,7 @@
     "transpile:ui": "tsc -b && vite build",
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
     "build": "npm run transpile && electron-builder",
+    "build:all": "npm run transpile && electron-builder --linux --win",
     "build:mac": "npm run transpile && electron-builder --mac --arm64",
     "build:linux": "npm run transpile && electron-builder --linux --x64",
     "build:windows": "npm run transpile && electron-builder --win --x64",
