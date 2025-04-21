@@ -8,26 +8,33 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest]
-
+        os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Clean install dependencies
-        shell: bash
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install
+      - name: Install dependencies
+        run: npm install
 
-      - name: Build Electron app
-        run: npm run build
+      - name: Transpile app
+        run: npm run transpile
+
+      - name: Package & Publish Electron App
+        run: |
+          npx electron-builder --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pixelshot-${{ matrix.os }}
+          path: |
+            out/**
