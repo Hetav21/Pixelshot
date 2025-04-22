@@ -72,22 +72,24 @@ export function Auth({ type }: { type: "sign-up" | "sign-in" }) {
     <div className="h-screen flex justify-content flex-col">
       <div className="h-screen flex justify-center place-items-center">
         <div>
-          <div className="px-10 mb-2">
-            <div className="text-3xl font-extrabold">Create an account</div>
-            <div className="text-slate-400">
+          <div className="min-w-96 mb-4">
+            <div className="text-3xl font-extrabold justify-center w-full flex">
+              Session
+            </div>
+            <div className="text-slate-400 flex justify-center w-full">
               {type === "sign-in"
-                ? "Don't have an account?"
-                : "Already have an account?"}
+                ? "Create a new session?"
+                : "Login to existing session?"}
               <Link
                 className="pl-2 underline"
                 to={type === "sign-in" ? "/sign-up" : "/sign-in"}
               >
-                {type === "sign-in" ? "Sign Up" : "Sign In"}
+                Click Here
               </Link>
             </div>
           </div>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
               <FormField
                 control={form.control}
                 name="username"
@@ -122,7 +124,7 @@ export function Auth({ type }: { type: "sign-up" | "sign-in" }) {
                 type="submit"
                 className="w-full mt-2 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
               >
-                {type === "sign-in" ? "Sign In" : "Sign Up"}
+                {type === "sign-in" ? "Login" : "Create"}
               </Button>
             </form>
           </Form>

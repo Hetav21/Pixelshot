@@ -65,7 +65,7 @@ if (!app.requestSingleInstanceLock()) {
 
   app.setLoginItemSettings({
     openAtLogin: true,
-    openAsHidden: true,
+    openAsHidden: false,
     path: process.execPath,
   });
 

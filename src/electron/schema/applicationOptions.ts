@@ -52,7 +52,7 @@ const applicationOptionsSchema = {
     hidden: !isPlatform("linux"),
   },
   exitToTray: {
-    default: false,
+    default: true,
     describe: "Minimize the app to the system tray instead of closing it",
     type: "boolean",
   },

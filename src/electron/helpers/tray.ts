@@ -1,27 +1,13 @@
 import { app, Menu, nativeImage, Tray } from "electron";
 import { BrowserWindow } from "electron/main";
-import { pathResolverAssets } from "../lib/pathResolver.js";
+import { getTrayIcon, pathResolverAssets } from "../lib/pathResolver.js";
 import { isPlatform } from "../lib/utils.js";
 import { ConfigType } from "../types/config.js";
 
 export function createTray(config: ConfigType, mainWindow: BrowserWindow) {
-  const icon =
-    (config.trayIcon === "monochrome"
-      ? `${config.trayIcon}Template`
-      : config.trayIcon) ||
-    (isPlatform("darwin")
-      ? "monochromeTemplate"
-      : isPlatform("win32")
-        ? "alternate"
-        : "default");
-
   console.info("Creating tray");
 
-  const tray = new Tray(
-    nativeImage.createFromPath(
-      pathResolverAssets(`public/tray-icons/${icon}.png`),
-    ),
-  );
+  const tray = new Tray(getTrayIcon(config));
 
   tray.on("click", () => {
     if (!mainWindow.isVisible()) {

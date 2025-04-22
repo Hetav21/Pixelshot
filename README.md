@@ -14,7 +14,8 @@ Pixelshot is a cross-platform screenshot application built with Electron and Rea
    - [Building for Production](#building-for-production)
 5. [Project Structure](#project-structure)
 6. [CI/CD](#cicd)
-7. [License](#license)
+7. [Acknowledgements](#acknowledgements)
+8. [License](#license)
 
 ## Download
 
@@ -111,6 +112,10 @@ npm run build:windows
 ## CI/CD
 
 This project uses GitHub Actions for continuous integration and deployment. The workflow builds the application for Windows, macOS, and Linux on every push to the main branch.
+
+## Acknowledgements
+
+- Icons used in the app are provided by [Icons8](https://icons8.com)
 
 ## License
 
