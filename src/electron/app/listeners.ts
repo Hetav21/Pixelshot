@@ -118,6 +118,7 @@ export function registerListeners(
           } else {
             screenshot({ filename: savePath })
               .then(() => {
+                addPath(username, savePath);
                 if (!config.disableNotifications) notifyScreenshot();
               })
               .catch((err) => console.warn("Screenshot failed:", err));
