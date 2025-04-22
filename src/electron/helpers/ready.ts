@@ -106,8 +106,6 @@ export async function getAppReady(config: ConfigType) {
       writable: false,
       configurable: false,
     });
-  } else {
-    mainWindow.webContents.openDevTools();
   }
 
   if (config.start === "maximized") {
@@ -119,6 +117,14 @@ export async function getAppReady(config: ConfigType) {
   }
 
   console.log(`App started in ${config.start} state`);
+
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
+
+    if (!isEnv("prod")) {
+      mainWindow.webContents.openDevTools({ mode: "detach" });
+    }
+  });
 
   // Main App
   if (isEnv("dev")) {
