@@ -4,6 +4,9 @@ productName: "Pixelshot"
 files:
   - "dist/**"
 
+asarUnpack:
+  - "node_modules/screenshot-desktop/lib/win32"
+
 artifactName: "pixelshot_${os}_${arch}.${ext}"
 
 directories:
