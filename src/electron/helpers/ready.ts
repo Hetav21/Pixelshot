@@ -1,4 +1,10 @@
-import { BrowserWindow, dialog, nativeImage, session } from "electron";
+import {
+  BrowserWindow,
+  desktopCapturer,
+  dialog,
+  nativeImage,
+  session,
+} from "electron";
 import windowStateKeeper from "electron-window-state";
 import { registerListeners } from "../app/listeners.js";
 import { isEnv } from "../lib/environment.js";
@@ -103,6 +109,16 @@ export async function getAppReady(config: ConfigType) {
   } else {
     mainWindow.webContents.openDevTools();
   }
+
+  session.defaultSession.setDisplayMediaRequestHandler(
+    (request, callback) => {
+      desktopCapturer.getSources({ types: ["screen"] }).then((sources) => {
+        // Grant access to the first screen found.
+        callback({ video: sources[0], audio: "loopback" });
+      });
+    },
+    { useSystemPicker: true },
+  );
 
   if (config.start === "maximized") {
     mainWindow.show();
