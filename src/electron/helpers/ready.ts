@@ -1,19 +1,8 @@
-import {
-  BrowserWindow,
-  desktopCapturer,
-  dialog,
-  nativeImage,
-  session,
-} from "electron";
+import { BrowserWindow, dialog, session } from "electron";
 import windowStateKeeper from "electron-window-state";
 import { registerListeners } from "../app/listeners.js";
 import { isEnv } from "../lib/environment.js";
-import {
-  getUIPath,
-  pathResolver,
-  pathResolverAssets,
-} from "../lib/pathResolver.js";
-import { isPlatform } from "../lib/utils.js";
+import { getAppIcon, getUIPath, pathResolver } from "../lib/pathResolver.js";
 import { ConfigType } from "../types/config.js";
 import { createMenu } from "./menu.js";
 import { handleCloseEvents, handleTerminate } from "./terminate.js";
@@ -70,11 +59,7 @@ export async function getAppReady(config: ConfigType) {
     autoHideMenuBar: config.menubar,
     frame: config.frame,
 
-    icon: nativeImage.createFromPath(
-      pathResolverAssets(
-        `public/icons/${config.appIcon || (isPlatform("win32") ? "alternate" : "default")}.png`,
-      ),
-    ),
+    icon: getAppIcon(config),
 
     webPreferences: {
       preload: pathResolver("preload.cjs"),

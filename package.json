@@ -1,7 +1,7 @@
 {
   "name": "pixelshot",
   "productName": "Pixelshot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Screenshots for desktop",
   "main": "dist/electron/index.js",
   "private": true,

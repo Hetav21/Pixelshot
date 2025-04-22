@@ -1,20 +1,14 @@
 import { exec } from "child_process";
-import {
-  BrowserWindow,
-  Notification,
-  dialog,
-  ipcMain,
-  nativeImage,
-} from "electron";
+import { BrowserWindow, Notification, dialog, ipcMain } from "electron";
 import fs from "fs";
 import path from "path";
 import screenshot from "screenshot-desktop";
 import { ipcMainHandle, ipcWebContentsSend } from "../electron-utils/ipc.js";
-import { pathResolverAssets } from "../lib/pathResolver.js";
+import { getAppIcon } from "../lib/pathResolver.js";
 import { isPlatform } from "../lib/utils.js";
 import { ConfigType } from "../types/config.js";
-import { signIn, signUp } from "./session.js";
 import { addPath, getAllValidPaths } from "./filePaths.js";
+import { signIn, signUp } from "./session.js";
 
 let captureInterval: NodeJS.Timeout | null = null;
 let countdownTimeout: NodeJS.Timeout | null = null;
@@ -92,14 +86,7 @@ export function registerListeners(
                 title,
                 body,
                 silent: true,
-                icon: nativeImage.createFromPath(
-                  pathResolverAssets(
-                    `public/icons/${
-                      config.appIcon ||
-                      (isPlatform("win32") ? "alternate" : "default")
-                    }.png`,
-                  ),
-                ),
+                icon: getAppIcon(config),
                 timeoutType: "default",
                 urgency: "low",
               }).show();
