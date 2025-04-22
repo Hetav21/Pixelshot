@@ -7,15 +7,16 @@ Pixelshot is a cross-platform screenshot application built with Electron and Rea
 1. [Download](#download)
 2. [Features](#features)
 3. [Tech Stack](#tech-stack)
-4. [Development](#development)
+4. [Documentation](#documentation)
+5. [Development](#development)
    - [Prerequisites](#prerequisites)
    - [Installation](#installation)
    - [Running in Development Mode](#running-in-development-mode)
    - [Building for Production](#building-for-production)
-5. [Project Structure](#project-structure)
-6. [CI/CD](#cicd)
-7. [Acknowledgements](#acknowledgements)
-8. [License](#license)
+6. [Project Structure](#project-structure)
+7. [CI/CD](#cicd)
+8. [Acknowledgements](#acknowledgements)
+9. [License](#license)
 
 ## Download
 
@@ -51,6 +52,14 @@ The latest version of Pixelshot is available to download from the [GitHub releas
 - **React Hook Form**: Form validation and handling
 - **Electron Store**: Persistent storage
 - **Electron Builder**: App packaging and distribution
+
+## Documentation
+
+Pixelshot includes comprehensive documentation to help users understand and maximize its capabilities:
+
+- [CLI Documentation](docs/CLI.md) - Show Pixelshot's command-line interface functionality
+- [Configuration Guide](docs/CONFIG.md) - Reference for all the application configuration options and file format specifications
+- [Logging System](docs/LOGGING.md) - Detailed explanation of the logging system and instructions for generating debug logs for troubleshooting
 
 ## Development
 
